@@ -345,7 +345,7 @@
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithAddress:(NSDictionary *)addressComponents {
-    [[self proxy] fireEvent:@"address" withObject:addressComponents];
+    [[self proxy] fireEvent:@"address" withObject:@{@"address": addressComponents}];
 }
 
 @end
