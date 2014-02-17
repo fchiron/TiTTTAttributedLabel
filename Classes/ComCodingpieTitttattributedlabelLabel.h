@@ -7,7 +7,7 @@
 #import "TiUIView.h"
 #import "TTTAttributedLabel.h"
 
-@interface ComCodingpieTitttattributedlabelLabel : TiUIView <TTTAttributedLabelDelegate, UIActionSheetDelegate, LayoutAutosizing>{
+@interface ComCodingpieTitttattributedlabelLabel : TiUIView <TTTAttributedLabelDelegate, LayoutAutosizing>{
 @private
 	TTTAttributedLabel *label;
     CALayer* bgdLayer;

@@ -337,60 +337,15 @@
 
 #pragma mark - TTTAttributedLabelDelegate
 - (void)attributedLabel:(TTTAttributedLabel *)label1 didSelectLinkWithURL:(NSURL *)url {
-    [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open Link in Safari", nil), nil] showInView:self];
+    [[self proxy] fireEvent:@"link" withObject:@{@"url": [url absoluteString]}];
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
-    TiLogMessage(@"Opening phone number");
-    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phoneNumber]];
-    [[UIApplication sharedApplication] openURL:phoneURL];
+    [[self proxy] fireEvent:@"phone" withObject:@{@"phone": phoneNumber}];
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithAddress:(NSDictionary *)addressComponents {
-    TiLogMessage(@"%@", addressComponents);
-    NSString *title = [addressComponents objectForKey:@"name"];
-    float latitude = [[addressComponents objectForKey:@"lat"] floatValue];
-    float longitude = [[addressComponents objectForKey:@"long"] floatValue];
-    
-    //for iOS6 later
-    if( [MKMapItem class]) {
-        if (latitude && longitude) {
-            MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) addressDictionary:nil];
-            MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-            
-            mapItem.name = title;
-            [mapItem openInMapsWithLaunchOptions:nil];
-        } else {
-            CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-            [geocoder geocodeAddressDictionary:addressComponents completionHandler:^(NSArray *placemarks, NSError *error) {
-                if (placemarks && placemarks.count > 0) {
-                    CLPlacemark *topResult = [placemarks objectAtIndex:0];
-                    MKPlacemark *placemark = [[MKPlacemark alloc] initWithPlacemark:topResult];
-                    
-                    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-                    
-                    mapItem.name = placemark.title;
-                    [mapItem openInMapsWithLaunchOptions:nil];
-                }
-            }];
-        }
-    } else {
-        int zoom = 13;
-        NSString *stringURL = [NSString stringWithFormat:@"http://maps.google.com/maps?q=%@@%1.6f,%1.6f&z=%d", title, latitude, longitude, zoom];
-        NSURL *url = [NSURL URLWithString:stringURL];
-        [[UIApplication sharedApplication] openURL:url];
-    }
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void) actionSheet:(UIActionSheet *)actionSheet
-clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        return;
-    }
-    
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title]];
+    [[self proxy] fireEvent:@"address" withObject:addressComponents];
 }
 
 @end
