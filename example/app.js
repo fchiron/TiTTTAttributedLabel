@@ -1,6 +1,6 @@
 // This is a test harness for your module
-// You should do something interesting in this harness 
-// to test out the module and to provide instructions 
+// You should do something interesting in this harness
+// to test out the module and to provide instructions
 // to users on how to use it by example.
 
 
@@ -26,7 +26,7 @@ var createSeparator = function() {
        width: Ti.UI.FILL,
        top: "10dp",
        bottom: "10dp",
-       backgroundColor: "orange" 
+       backgroundColor: "orange"
     });
 };
 
@@ -45,6 +45,14 @@ var label = TiTTTAttributedLabel.createLabel({
    height: Ti.UI.SIZE,
    textCheckingTypes: TiTTTAttributedLabel.CHECKING_TYPE_LINK|TiTTTAttributedLabel.CHECKING_TYPE_ADDRESS|TiTTTAttributedLabel.CHECKING_TYPE_PHONE_NUMBER
 });
+
+function dumpEvent(e) {
+    Ti.API.info("" + e.type + " event: " + JSON.stringify(e, null, 2));
+}
+
+label.addEventListener("link", dumpEvent);
+label.addEventListener("phone", dumpEvent);
+label.addEventListener("address", dumpEvent);
 
 scrollView.add(label);
 scrollView.add(createSeparator());
