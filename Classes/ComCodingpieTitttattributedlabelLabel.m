@@ -198,6 +198,27 @@
 
 #pragma mark Public APIs
 
+- (void)setUnderlineLinks_:(id)value {
+    BOOL shouldUnderline = [TiUtils boolValue:value];
+    BOOL isUnderlining   = [[self.label.linkAttributes objectForKey:(NSString *)kCTUnderlineStyleAttributeName] boolValue];
+    NSMutableDictionary *mutableLinkAttributes;
+
+    if (shouldUnderline && isUnderlining || (!shouldUnderline && !isUnderlining)) {
+        // Nothing to do
+        return;
+    }
+
+    // Set the underline attribute to the correct value
+    mutableLinkAttributes = [self.label.linkAttributes mutableCopy];
+    [mutableLinkAttributes setObject:@(shouldUnderline) forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    self.label.linkAttributes = mutableLinkAttributes;
+
+    // Refresh the label text to take the change into account
+    if (self.label.text) {
+        self.label.text = self.label.text;
+    }
+}
+
 -(void)setVerticalAlign_:(id)value
 {
     verticalAlign = [TiUtils intValue:value def:-1];
