@@ -55,6 +55,8 @@ label.addEventListener("link", dumpEvent);
 label.addEventListener("phone", dumpEvent);
 label.addEventListener("address", dumpEvent);
 
+label.addLinkToURL("https://google.fr", [1, 5]);
+
 scrollView.add(label);
 scrollView.add(createSeparator());
 

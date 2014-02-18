@@ -20,4 +20,6 @@
 
 @property(nonatomic,getter=isHighlighted) BOOL     highlighted;
 
+- (void)addLinkToURL:(NSURL *)url range:(NSRange)range;
+
 @end

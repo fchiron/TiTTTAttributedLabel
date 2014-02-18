@@ -198,6 +198,12 @@
 
 #pragma mark Public APIs
 
+- (void)addLinkToURL:(NSURL *)url range:(NSRange)range {
+    ENSURE_VALUE_RANGE(range.location, 0, [self.label.text length] - 1);
+    ENSURE_VALUE_RANGE(range.length,   0, [self.label.text length] - range.location);
+    [[self label] addLinkToURL:url withRange:range];
+}
+
 - (void)setUnderlineLinks_:(id)value {
     BOOL shouldUnderline = [TiUtils boolValue:value];
     BOOL isUnderlining   = [[self.label.linkAttributes objectForKey:(NSString *)kCTUnderlineStyleAttributeName] boolValue];

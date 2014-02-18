@@ -6,6 +6,7 @@
  */
 
 #import "ComCodingpieTitttattributedlabelLabelProxy.h"
+#import "ComCodingpieTitttattributedlabelLabel.h"
 #import "TiUtils.h"
 
 @implementation ComCodingpieTitttattributedlabelLabelProxy
@@ -90,6 +91,22 @@ USE_VIEW_FOR_CONTENT_WIDTH
 -(TiDimension)defaultAutoHeightBehavior:(id)unused
 {
     return TiDimensionAutoSize;
+}
+
+- (void)addLinkToURL:(id)args {
+    NSString *url;
+    NSArray  *range;
+    NSInteger rangeBegin;
+    NSInteger rangeLength;
+
+    ENSURE_ARG_COUNT(args, 2);
+    ENSURE_ARG_AT_INDEX(url,   args, 0, NSString);
+    ENSURE_ARG_AT_INDEX(range, args, 1, NSArray);
+    ENSURE_INT_AT_INDEX(rangeBegin,  range, 0);
+    ENSURE_INT_AT_INDEX(rangeLength, range, 1);
+
+    [(ComCodingpieTitttattributedlabelLabel *)self.view addLinkToURL:[NSURL URLWithString:url]
+                                                               range:NSMakeRange(rangeBegin, rangeLength)];
 }
 
 @end

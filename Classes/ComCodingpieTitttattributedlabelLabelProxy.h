@@ -10,4 +10,6 @@
 
 }
 
+- (void)addLinkToURL:(id)args;
+
 @end
